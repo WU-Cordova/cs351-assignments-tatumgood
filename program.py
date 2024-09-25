@@ -8,3 +8,9 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+
+from datastructures.avl import AVLTree
+def main():
+    tree = AVLTree[int,int]
