@@ -1,4 +1,5 @@
 from __future__ import annotations
+from collections import deque
 from dataclasses import dataclass
 from typing import Generic, Callable, List, Optional, Sequence, Tuple
 from datastructures.iavltree import K, V, IAVLTree
@@ -86,7 +87,24 @@ class AVLTree(IAVLTree[K,V], Generic[K, V]):
         raise NotImplementedError
 
     def bforder(self, visit: Callable[[V], None]| None=None) -> List[K]:
-        raise NotImplementedError
+        if not self._root:
+            return []
+        keys: List[K] = []
+        queue = deque()
+        queue.append(self._root)
+
+        while queue:
+            node = queue.popleft()
+            if visit:
+                visit(node.value)
+            keys.append(node.key)
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+        return keys
+
+
 
     def size(self) -> int:
         raise NotImplementedError
