@@ -66,7 +66,18 @@ class AVLTree(IAVLTree[K,V], Generic[K, V]):
         raise NotImplementedError
 
     def inorder(self, visit: Callable[[V], None] | None=None) -> List[K]:
-        raise NotImplementedError
+        def _inorder(node: Optional [AVLNode])-> AVLNode:
+            if not node:
+                return
+            _inorder(node.left)
+            keys.append(node.key)
+            if visit:
+                visit(node.value)
+            _inorder(node.right)
+        
+        keys: List[K] = []
+        _inorder(self._root)
+        return keys
 
     def preorder(self, visit: Callable[[V], None]| None=None) -> List[K]:
         raise NotImplementedError
