@@ -1,5 +1,4 @@
 import pytest
-
 from datastructures.avltree import AVLTree
 
 class TestAVLTreeAuxiliary():
