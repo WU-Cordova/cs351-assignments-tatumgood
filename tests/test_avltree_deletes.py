@@ -2,6 +2,8 @@ import pytest
 
 from datastructures.avltree import AVLTree
 
+#rom datastructures.avltree import AVLTree
+
 class TestAVLDeletes():
     @pytest.fixture
     def avltree(self) -> AVLTree: return AVLTree[int, int]([(8, 8), (9, 9), (10, 10), (2, 2), (1, 1), (5, 5), (3, 3), (6, 6), (4, 4), (7, 7)])
