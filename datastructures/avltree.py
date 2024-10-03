@@ -2,7 +2,7 @@ from __future__ import annotations
 from collections import deque
 from dataclasses import dataclass
 from typing import Generic, Callable, List, Optional, Sequence, Tuple
-from datastructures.iavltree import K, V, IAVLTree
+from cs_351_assignments_tatumgood.datastructures.iavltree import K, V, IAVLTree
 
 #version 1
 # class AVLNode(Generic[K, V]):
@@ -54,8 +54,9 @@ class AVLTree(IAVLTree[K,V], Generic[K, V]):
     def __repr__(self) -> str:
         descriptions = ['Breadth First: ', 'In-order: ', 'Pre-order: ', 'Post-order: ']
         traversals = [self.bforder(), self.inorder(), self.preorder(), self.postorder()]
-        return f'{"\n".join([f'{desc} {"".join(str(trav))}' for desc, trav in zip(descriptions, traversals)])}\n\n{str(self)}' 
- 
+        return "".join([desc + " " + "".join(str(trav).replace("\\", "\\\\")) for desc, trav in zip(descriptions, traversals)]) + "\n\n" + str(self)
+        #return f'{"\n".join([f" {desc} {"".join(str(trav).replace("\\", "\\\\"))}" for desc, trav in zip(descriptions, traversals)])}\n\n{str(self)}' 
+        #return f'{"\n".join([f'{desc} {"".join(str(trav))}' for desc, trav in zip(descriptions, traversals)])}\n\n{str(self)}' 
 
     def insert(self, key: K, value: V) -> None:
         self._root = self._insert(self._root, key, value)
