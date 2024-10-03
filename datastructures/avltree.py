@@ -69,7 +69,7 @@ class AVLTree(IAVLTree[K,V], Generic[K, V]):
         else:
             node.right = self._insert(node.right, key, value)
 
-        node.height = 1 + max(self._height(node.left), self._height(node.right))   
+        node.height = 1 + max(self._height(node.left), self._height(node.right))
 
         return self._balance_tree(node)
     
@@ -218,8 +218,11 @@ class AVLTree(IAVLTree[K,V], Generic[K, V]):
 
         return _size(self._root)
     
+    # def _height(self, node: AVLNode) -> int:
+    #     return node.height if node else 0
     #potential helper function
-    def _balance_factor(node: AVLNode) -> int: return _height(node.left) - _height(node.right)
+
+    def _balance_factor(self, node: AVLNode) -> int: return self._height(node.left) - self._height(node.right)
 
     def _balance_tree(self, node: AVLNode) -> AVLNode:
         balance_factor = self._balance_factor(node)
