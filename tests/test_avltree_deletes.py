@@ -1,6 +1,12 @@
 import pytest
 
 from datastructures.avltree import AVLTree
+
+# import sys
+# import os
+# sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../datastructures')))
+
+# from avltree import AVLTree
 #cs351-assignments-tatumgood.
 #rom datastructures.avltree import AVLTree
 
