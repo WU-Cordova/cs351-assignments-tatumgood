@@ -2,7 +2,7 @@ from __future__ import annotations
 from collections import deque
 from dataclasses import dataclass
 from typing import Generic, Callable, List, Optional, Sequence, Tuple
-from cs_351_assignments_tatumgood.datastructures.iavltree import K, V, IAVLTree
+from datastructures.iavltree import K, V, IAVLTree
 
 #version 1
 # class AVLNode(Generic[K, V]):
