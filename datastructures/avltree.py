@@ -61,16 +61,19 @@ class AVLTree(IAVLTree[K,V], Generic[K, V]):
     def insert(self, key: K, value: V) -> None:
         self._root = self._insert(self._root, key, value)
     
-    def _insert(self, node: AVLNode, key: K, value: V) -> AVLNode:
+    def _insert(self, node: Optional[AVLNode], key: K, value: V) -> Optional[AVLNode]:
         if node is None:
             return AVLNode(key, value)
 
         if key < node.key:
             node.left = self._insert(node.left, key, value)
-        else:
+        elif key > node.key:
             node.right = self._insert(node.right, key, value)
+        else:
+            node.value = value #if key already exists
+            raise ValueError(f"Key {key} already exists in the tree.")
 
-        node.height = 1 + max(self._height(node.left), self._height(node.right))
+        node._height = 1 + max(self._height(node.left), self._height(node.right))
 
         return self._balance_tree(node)
     
@@ -112,7 +115,7 @@ class AVLTree(IAVLTree[K,V], Generic[K, V]):
             node.right = self._delete(node.right, successor.key)
 
         # Update height and balance the tree
-        node.height = 1 + max(self._height(node.left), self._height(node.right))
+        node._height = 1 + max(self._height(node.left), self._height(node.right))
         return self._balance_tree(node)
 
     def _find_successor(self, node: AVLNode) -> AVLNode:
@@ -201,13 +204,13 @@ class AVLTree(IAVLTree[K,V], Generic[K, V]):
 
         while queue:
             node = queue.popleft()
-            if visit:
-                visit(node.value)
             keys.append(node.key)
             if node.left:
                 queue.append(node.left)
             if node.right:
                 queue.append(node.right)
+            if visit:
+                visit(node.value)
         return keys
 
     def size(self) -> int:
@@ -218,11 +221,12 @@ class AVLTree(IAVLTree[K,V], Generic[K, V]):
 
         return _size(self._root)
     
-    def _height(self, node: AVLNode) -> int:
+    def _height(self, node: Optional[AVLNode]) -> int:
         return node._height if node else 0 #was erroring for two days because I forgot a "_"
     #potential helper function
 
-    def _balance_factor(self, node: AVLNode) -> int: return self._height(node.left) - self._height(node.right)
+    def _balance_factor(self, node: AVLNode) -> int: 
+        return self._height(node.left) - self._height(node.right)
 
     def _balance_tree(self, node: AVLNode) -> AVLNode:
         balance_factor = self._balance_factor(node)
@@ -235,12 +239,18 @@ class AVLTree(IAVLTree[K,V], Generic[K, V]):
             return self._rotate_left(node)
         # LR: do a left rotation on node.left, do a right rotation on node, then return node
         elif balance_factor > 1 and self._balance_factor(node.left) < 0:  
-            node.left = self._rotate_right(node.left)
-            return self._rotate_left(node)
+            # node.left = self._rotate_right(node.left)
+            # return self._rotate_left(node)
+            node.left = self._rotate_left(node.left)
+            return self._rotate_right(node)
+
         # RL: do a right rotation on node.right, do a left rotation on node,  then return node
         elif balance_factor < -1 and self._balance_factor(node.right) > 0:  
-            node.right = self._rotate_left(node.right)
-            return self._rotate_right(node)
+            # node.right = self._rotate_left(node.right)
+            # return self._rotate_right(node)
+            node.right = self._rotate_right(node.right)
+            return self._rotate_left(node)
+
         
         # Else:  no rotations needed!  just return the node
         return node
