@@ -165,7 +165,7 @@ class AVLTree(IAVLTree[K,V], Generic[K, V]):
     #     _inorder(self._root)
     #     return keys
 
-    def preorder(self, visit: Callable[[V], None]| None=None) -> List[K]:
+    def preorder(self, visit: Optional[Callable[[V], None]]=None) -> List[K]:
         def _preorder(node: Optional[AVLNode]) -> None:
             if node:
                 keys.append(node.key)
@@ -178,7 +178,7 @@ class AVLTree(IAVLTree[K,V], Generic[K, V]):
         _preorder(self._root)
         return keys
 
-    def postorder(self, visit: Callable[[V], None]| None=None) -> List[K]:
+    def postorder(self, visit: Optional[Callable[[V], None]]=None) -> List[K]:
         def _postorder(node: Optional[AVLNode]) -> None:
             if node:
                 _postorder(node.left)
@@ -191,9 +191,10 @@ class AVLTree(IAVLTree[K,V], Generic[K, V]):
         _postorder(self._root)
         return keys
 
-    def bforder(self, visit: Callable[[V], None]| None=None) -> List[K]:
+    def bforder(self, visit: Optional[Callable[[V], None]]=None) -> List[K]:
         if not self._root:
             return []
+        
         keys: List[K] = []
         queue = deque()
         queue.append(self._root)
@@ -209,8 +210,6 @@ class AVLTree(IAVLTree[K,V], Generic[K, V]):
                 queue.append(node.right)
         return keys
 
-
-
     def size(self) -> int:
         def _size(node: Optional[AVLNode]) -> int:
             if node is None:
@@ -219,8 +218,8 @@ class AVLTree(IAVLTree[K,V], Generic[K, V]):
 
         return _size(self._root)
     
-    # def _height(self, node: AVLNode) -> int:
-    #     return node.height if node else 0
+    def _height(self, node: AVLNode) -> int:
+        return node._height if node else 0 #was erroring for two days because I forgot a "_"
     #potential helper function
 
     def _balance_factor(self, node: AVLNode) -> int: return self._height(node.left) - self._height(node.right)
