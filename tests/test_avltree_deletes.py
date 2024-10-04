@@ -29,4 +29,4 @@ class TestAVLDeletes():
     def test_delete_node_with_two_children(self, avltree: AVLTree) -> None:
         avltree.delete(2)
         assert avltree.inorder() == [1, 3, 4, 5, 6, 7, 8, 9, 10]
-        
+ 
