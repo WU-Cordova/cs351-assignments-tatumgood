@@ -2,10 +2,22 @@
 from datastructures.avltree import AVLTree
 def main():
     tree = AVLTree[int, int]()
-    for node in [8, 9, 10, 2, 1, 5, 3, 6, 4, 7]:
+    for node in [8, 9, 10, 2]:
         tree.insert(node, node)
     
-    print(tree.inorder())
+    print(tree.bforder())
+
+    def print_node(value: int) -> None:
+        print(value)
+
+    #using a built in higher order func
+    _ = tree.bforder(print)
+    _ = tree.bforder(print_node)
+
+    _ = tree.bforder(lambda value: print(value))
+
+    
+
 
 if __name__ == '__main__':
     main()
