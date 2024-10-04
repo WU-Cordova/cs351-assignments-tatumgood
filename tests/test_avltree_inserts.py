@@ -14,3 +14,4 @@ class TestAVLInserts():
     def test_insert_inorder(self, avltree: AVLTree) -> None: assert avltree.inorder() == [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     def test_insert_preorder(self, avltree: AVLTree) -> None: assert avltree.preorder() == [5, 3, 2, 1, 4, 8, 6, 7, 9, 10]
     def test_insert_postorder(self, avltree: AVLTree) -> None: assert avltree.postorder() == [1, 2, 4, 3, 7, 6, 10, 9, 8, 5]
+
