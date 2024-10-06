@@ -170,12 +170,13 @@ class AVLTree(IAVLTree[K,V], Generic[K, V]):
 
     def preorder(self, visit: Optional[Callable[[V], None]]=None) -> List[K]:
         def _preorder(node: Optional[AVLNode]) -> None:
-            if node:
-                keys.append(node.key)
-                if visit:
-                    visit(node.value)
-                _preorder(node.left)
-                _preorder(node.right)
+            if not node:
+                return
+            keys.append(node.key)
+            if visit:
+                visit(node.value)
+            _preorder(node.left)
+            _preorder(node.right)
 
         keys: List[K] = []
         _preorder(self._root)
@@ -183,12 +184,13 @@ class AVLTree(IAVLTree[K,V], Generic[K, V]):
 
     def postorder(self, visit: Optional[Callable[[V], None]]=None) -> List[K]:
         def _postorder(node: Optional[AVLNode]) -> None:
-            if node:
-                _postorder(node.left)
-                _postorder(node.right)
-                keys.append(node.key)
-                if visit:
-                    visit(node.value)
+            if not node:
+                return
+            _postorder(node.left)
+            _postorder(node.right)
+            keys.append(node.key)
+            if visit:
+                visit(node.value)
 
         keys: List[K] = []
         _postorder(self._root)
@@ -232,20 +234,20 @@ class AVLTree(IAVLTree[K,V], Generic[K, V]):
         balance_factor = self._balance_factor(node)
 
         # LL: do a right rotation on node, then return node
-        if balance_factor > 1 and self._balance_factor(node.left) >= 0:  
+        if balance_factor > 1 and node.left and self._balance_factor(node.left) >= 0:  
             return self._rotate_right(node)
         # RR: do a left rotation on node, then return node
-        elif balance_factor < -1 and self._balance_factor(node.right) <= 0:  
+        if balance_factor < -1 and node.right and self._balance_factor(node.right) <= 0:  
             return self._rotate_left(node)
         # LR: do a left rotation on node.left, do a right rotation on node, then return node
-        elif balance_factor > 1 and self._balance_factor(node.left) < 0:  
+        if balance_factor > 1 and node.left and self._balance_factor(node.left) < 0:  
             # node.left = self._rotate_right(node.left)
             # return self._rotate_left(node)
             node.left = self._rotate_left(node.left)
             return self._rotate_right(node)
 
         # RL: do a right rotation on node.right, do a left rotation on node,  then return node
-        elif balance_factor < -1 and self._balance_factor(node.right) > 0:  
+        if balance_factor < -1 and node.right and self._balance_factor(node.right) > 0:  
             # node.right = self._rotate_left(node.right)
             # return self._rotate_right(node)
             node.right = self._rotate_right(node.right)
@@ -263,8 +265,8 @@ class AVLTree(IAVLTree[K,V], Generic[K, V]):
         new_root.left = node
         node.right = new_left_subtree
 
-        node.height = 1 + max(self._height(node.left), self._height(node.right))
-        new_root.height = 1 + max(self._height(new_root.left), self._height(new_root.right))
+        node._height = 1 + max(self._height(node.left), self._height(node.right))
+        new_root._height = 1 + max(self._height(new_root.left), self._height(new_root.right))
 
         return new_root
 
@@ -275,7 +277,7 @@ class AVLTree(IAVLTree[K,V], Generic[K, V]):
         new_root.right = node
         node.left = new_right_subtree
 
-        node.height = 1 + max(self._height(node.left), self._height(node.right))
-        new_root.height = 1 + max(self._height(new_root.left), self._height(new_root.right))
+        node._height = 1 + max(self._height(node.left), self._height(node.right))
+        new_root._height = 1 + max(self._height(new_root.left), self._height(new_root.right))
 
         return new_root
