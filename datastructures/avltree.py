@@ -4,20 +4,6 @@ from dataclasses import dataclass
 from typing import Generic, Callable, List, Optional, Sequence, Tuple
 from datastructures.iavltree import K, V, IAVLTree
 
-#version 1
-# class AVLNode(Generic[K, V]):
-#     def __init__(self, key: K, value:V, left: Optional[AVLNode]=None, right: Optional[AVLNode]=None):
-#         self._key = key 
-#         self._value = value 
-#         self._left = left
-#         self._right = right
-#         self._height = 1
-
-#     @property
-#     def key(self) -> K: return self._key
-
-#     @key.setter
-#     def key(self, new_key: K) -> None: self._key = new_key
 
 #version 2
 @dataclass
@@ -28,10 +14,6 @@ class AVLNode(Generic[K,V]):
         self.left = left
         self.right = right
         self._height = 1
-
-# node = AVLNode(None, None)
-# print (node.key)
-# node.key = new_key
 
 class AVLTree(IAVLTree[K,V], Generic[K, V]):
     def __init__(self, starting_sequence: Optional[Sequence[Tuple]]=None):
@@ -55,9 +37,7 @@ class AVLTree(IAVLTree[K,V], Generic[K, V]):
         descriptions = ['Breadth First: ', 'In-order: ', 'Pre-order: ', 'Post-order: ']
         traversals = [self.bforder(), self.inorder(), self.preorder(), self.postorder()]
         return "".join([desc + " " + "".join(str(trav).replace("\\", "\\\\")) for desc, trav in zip(descriptions, traversals)]) + "\n\n" + str(self)
-        #return f'{"\n".join([f" {desc} {"".join(str(trav).replace("\\", "\\\\"))}" for desc, trav in zip(descriptions, traversals)])}\n\n{str(self)}' 
-        #return f'{"\n".join([f'{desc} {"".join(str(trav))}' for desc, trav in zip(descriptions, traversals)])}\n\n{str(self)}' 
-
+   
     def insert(self, key: K, value: V) -> None:
         self._root = self._insert(self._root, key, value)
     
@@ -122,24 +102,6 @@ class AVLTree(IAVLTree[K,V], Generic[K, V]):
         if node.left is None:
             return node
         return self._find_successor(node.left)
-    
-    # def inorder(self, visit: Callable[[V], None] | None=None) -> List[K]:
-    #     keys: List[K] = []
-    #     stack = []
-    #     node = self._root
-
-    #     while node or stack:
-    #         while node:
-    #             stack.append(node)
-    #             node = node.left
-
-    #         node = stack.pop()
-    #         keys.append(node.key)
-    #         if visit:
-    #             visit(node.value)
-    #         node = node.right
-
-    #     return keys
 
     def inorder(self, visit: Callable[[V], None] | None=None) -> List[K]:
         def _inorder(node: Optional [AVLNode])-> AVLNode:
@@ -154,19 +116,6 @@ class AVLTree(IAVLTree[K,V], Generic[K, V]):
         keys: List[K] = []
         _inorder(self._root)
         return keys
-    
-    # def inorder(self, visit: Callable[[V], None] | None=None) -> List[K]:
-    #     def _inorder(node: Optional[AVLNode]) -> None:
-    #         if node:
-    #             _inorder(node.left)
-    #             keys.append(node.key)
-    #             if visit:
-    #                 visit(node.value)
-    #             _inorder(node.right)
-
-    #     keys: List[K] = []
-    #     _inorder(self._root)
-    #     return keys
 
     def preorder(self, visit: Optional[Callable[[V], None]]=None) -> List[K]:
         def _preorder(node: Optional[AVLNode]) -> None:
