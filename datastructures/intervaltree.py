@@ -23,7 +23,7 @@ class IntervalTree:
         node: IntervalNode = self._tree.search(low)
 
         if node:
-            node.intervals_at_low.insert(high, value)
+            node.intervals_at_low.insert((high, value.symbol), value)
         else:
             # Fix: Ensure that key is always (low, high), a tuple
             new_node = IntervalNode(key=(low, high), value=value, max_end=high)

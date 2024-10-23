@@ -16,10 +16,22 @@ class StockManager:
         self._stocks = AVLTree()  # Assuming AVLTree is used to keep stocks sorted
 
     def add_stock(self, stock: Stock):
+        existing_stock = self._stocks.search(stock.symbol)  # Assuming AVLTree has a search method
+
+        if existing_stock:
+            # Update the existing stock's price (or other details)
+            existing_stock.low = stock.low
+            existing_stock.high = stock.high
+            print(f"Updated stock {stock.symbol}")
+        else:
+            # Add stock to the interval tree and AVL tree if it's a new entry
+            self._interval_tree.insert(stock.low, stock.high, stock)
+            self._stocks.insert(stock.symbol, stock)
+
         # Add stock to the interval tree
-        self._interval_tree.insert(stock.low, stock.high, stock)
+        #self._interval_tree.insert(stock.low, stock.high, stock)
         # Add stock to AVL tree for sorted access
-        self._stocks.insert(stock)  # Assuming AVLTree has an insert method
+        #self._stocks.insert(stock.symbol, stock)  # Assuming AVLTree has an insert method
 
     def load_from_csv(self, filepath):
         with open(filepath, 'r') as csvfile:
